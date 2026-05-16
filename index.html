@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OST Print — Типография и полиграфия</title>
+    <style>
+        /* Базовые настройки */
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Helvetica Neue', Arial, sans-serif; }
+        body { color: #000; line-height: 1.6; background-color: #f9f9f9; }
+        a { text-decoration: none; color: inherit; }
+        
+        /* Черно-белая палитра */
+        :root {
+            --black: #000000;
+            --dark-grey: #333333;
+            --light-grey: #eaeaea;
+            --white: #ffffff;
+        }
+
+        /* Шапка */
+        header { background-color: var(--white); padding: 20px 10%; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--light-grey); position: sticky; top: 0; z-index: 100; }
+        .logo { font-size: 28px; font-weight: 900; color: var(--black); letter-spacing: 2px; text-transform: uppercase; }
+        .logo span { font-weight: 300; }
+        nav ul { display: flex; list-style: none; gap: 30px; }
+        nav ul li a { font-weight: 600; text-transform: uppercase; font-size: 14px; letter-spacing: 1px; transition: color 0.3s; }
+        nav ul li a:hover { color: #888; }
+        
+        /* Кнопки */
+        .btn { background-color: var(--black); color: var(--white); padding: 12px 25px; border: 2px solid var(--black); font-weight: bold; text-transform: uppercase; font-size: 14px; letter-spacing: 1px; transition: all 0.3s ease; cursor: pointer; display: inline-block; }
+        .btn:hover { background-color: var(--white); color: var(--black); }
+
+        /* Главный экран */
+        .hero { background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://images.unsplash.com/photo-1562613531-a2fa96a32a21?ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80&saturation=-100') center/cover; height: 75vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; color: var(--white); padding: 0 20px; }
+        .hero h1 { font-size: 55px; margin-bottom: 20px; font-weight: 900; text-transform: uppercase; letter-spacing: 2px; }
+        .hero p { font-size: 20px; margin-bottom: 40px; max-width: 650px; font-weight: 300; }
+
+        /* Преимущества */
+        .features { display: flex; justify-content: center; gap: 50px; padding: 40px 10%; background-color: var(--black); color: var(--white); flex-wrap: wrap; text-align: center; }
+        .feature-item { max-width: 250px; }
+        .feature-item h4 { font-size: 16px; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 1px; }
+        .feature-item p { font-size: 14px; color: #aaa; }
+
+        /* Каталог продукции */
+        .services { padding: 80px 10%; background-color: var(--white); }
+        .section-title { font-size: 36px; color: var(--black); margin-bottom: 60px; font-weight: 900; text-transform: uppercase; letter-spacing: 2px; text-align: center; }
+        .services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 30px; }
+        .service-card { background: var(--white); padding: 35px 25px; border: 1px solid var(--light-grey); transition: all 0.3s; display: flex; flex-direction: column; }
+        .service-card:hover { transform: translateY(-5px); box-shadow: 8px 8px 0px var(--black); border-color: var(--black); }
+        .service-icon { font-size: 35px; margin-bottom: 20px; color: var(--black); border-bottom: 2px solid var(--black); padding-bottom: 10px; width: max-content; }
+        .service-card h3 { color: var(--black); margin-bottom: 10px; font-size: 18px; text-transform: uppercase; font-weight: 800; }
+        .service-card p { color: var(--dark-grey); font-size: 14px; flex-grow: 1; }
+
+        /* Как заказать */
+        .how-it-works { padding: 80px 10%; background-color: #f0f0f0; text-align: center; }
+        .steps { display: flex; justify-content: space-between; gap: 20px; flex-wrap: wrap; margin-top: 50px; }
+        .step { flex: 1; min-width: 220px; padding: 40px 20px; background: var(--white); border: 1px solid var(--light-grey); position: relative; }
+        .step-number { position: absolute; top: -25px; left: 50%; transform: translateX(-50%); background: var(--black); color: var(--white); width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 20px; border: 4px solid #f0f0f0; }
+        .step h4 { margin-top: 10px; margin-bottom: 10px; text-transform: uppercase; font-size: 16px; }
+        .step p { font-size: 14px; color: var(--dark-grey); }
+
+        /* Подвал */
+        footer { background-color: var(--black); color: var(--white); padding: 60px 10% 20px; }
+        .footer-content { display: flex; justify-content: space-between; flex-wrap: wrap; margin-bottom: 40px; gap: 30px; }
+        .footer-col h4 { margin-bottom: 25px; font-size: 18px; text-transform: uppercase; letter-spacing: 2px; border-bottom: 1px solid var(--dark-grey); padding-bottom: 10px; display: inline-block; }
+        .footer-col p { margin-bottom: 12px; color: #ccc; font-size: 15px; }
+        .footer-col a { color: var(--white); text-decoration: underline; }
+        .copyright { text-align: center; border-top: 1px solid var(--dark-grey); padding-top: 20px; font-size: 13px; color: #888; }
+
+        /* ЧАТ-БОТ СТИЛИ */
+        .chat-widget { position: fixed; bottom: 30px; right: 30px; z-index: 999; font-family: Arial, sans-serif; }
+        .chat-btn { width: 60px; height: 60px; background: var(--black); color: var(--white); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 30px; cursor: pointer; box-shadow: 0 5px 15px rgba(0,0,0,0.3); transition: transform 0.3s; }
+        .chat-btn:hover { transform: scale(1.1); }
+        .chat-window { width: 320px; background: var(--white); border: 2px solid var(--black); box-shadow: 8px 8px 0px var(--black); display: none; flex-direction: column; position: absolute; bottom: 80px; right: 0; border-radius: 5px; overflow: hidden; }
+        .chat-header { background: var(--black); color: var(--white); padding: 15px; font-weight: bold; display: flex; justify-content: space-between; align-items: center; text-transform: uppercase; letter-spacing: 1px; font-size: 14px; }
+        .close-chat { cursor: pointer; font-size: 20px; line-height: 1; }
+        .chat-messages { padding: 15px; height: 300px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; font-size: 14px; background: #fdfdfd; scroll-behavior: smooth; }
+        .msg-bot { background: var(--light-grey); padding: 10px 15px; border-radius: 10px 10px 10px 0; align-self: flex-start; max-width: 85%; color: var(--black); }
+        .msg-user { background: var(--black); color: var(--white); padding: 10px 15px; border-radius: 10px 10px 0 10px; align-self: flex-end; max-width: 85%; }
+        .chat-options { padding: 15px; border-top: 1px solid var(--light-grey); display: flex; flex-direction: column; gap: 8px; background: var(--white); }
+        .chat-option-btn { background: none; border: 1px solid var(--black); padding: 10px; font-size: 13px; cursor: pointer; transition: all 0.2s; text-transform: uppercase; font-weight: bold; }
+        .chat-option-btn:hover { background: var(--black); color: var(--white); }
+        .chat-wa-link { display: block; text-align: center; background: #25D366; color: white; padding: 10px; text-decoration: none; font-weight: bold; border-radius: 5px; margin-top: 5px; text-transform: uppercase; font-size: 13px; }
+
+        @media (max-width: 768px) {
+            header { flex-direction: column; gap: 20px; }
+            nav ul { flex-direction: column; text-align: center; gap: 15px; }
+            .hero h1 { font-size: 36px; }
+            .features { flex-direction: column; align-items: center; gap: 30px; }
+            .footer-content { flex-direction: column; }
+            .chat-widget { bottom: 15px; right: 15px; }
+            .chat-window { width: calc(100vw - 30px); position: fixed; bottom: 85px; right: 15px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Шапка -->
+    <header>
+        <div class="logo">OST<span>PRINT</span></div>
+        <nav>
+            <ul>
+                <li><a href="#services">Продукция</a></li>
+                <li><a href="#how-it-works">Как заказать</a></li>
+                <li><a href="#contacts">Контакты</a></li>
+            </ul>
+        </nav>
+        <a href="https://wa.me/77717694050" class="btn" target="_blank">Написать в WhatsApp</a>
+    </header>
+
+    <!-- Главный экран -->
+    <section class="hero">
+        <h1>Срочная печать полиграфии</h1>
+        <p>Выполнение заказов любого объема. Оперативно, качественно и со строгим вниманием к деталям.</p>
+        <a href="#services" class="btn">Смотреть услуги</a>
+    </section>
+
+    <!-- Преимущества -->
+    <section class="features">
+        <div class="feature-item">
+            <h4>Печать в срок</h4>
+            <p>Сдаем заказы вовремя, беремся за срочную печать день в день.</p>
+        </div>
+        <div class="feature-item">
+            <h4>Любые тиражи</h4>
+            <p>От одного экземпляра до крупных оптовых партий для бизнеса.</p>
+        </div>
+        <div class="feature-item">
+            <h4>Контроль качества</h4>
+            <p>Точная цветопередача и работа только с проверенными материалами.</p>
+        </div>
+    </section>
+
+    <!-- Продукция -->
+    <section id="services" class="services">
+        <h2 class="section-title">Наша продукция</h2>
+        <div class="services-grid">
+            <div class="service-card"><div class="service-icon">📇</div><h3>Визитки</h3><p>Печать на премиальной, дизайнерской и стандартной бумаге.</p></div>
+            <div class="service-card"><div class="service-icon">🚩</div><h3>Баннеры</h3><p>Широкоформатная печать для наружной рекламы и интерьера.</p></div>
+            <div class="service-card"><div class="service-icon">📐</div><h3>Чертежи</h3><p>Высокоточная печать проектной документации любых форматов.</p></div>
+            <div class="service-card"><div class="service-icon">🖼️</div><h3>Плакаты</h3><p>Яркие постеры и афиши. Интерьерное качество печати.</p></div>
+            <div class="service-card"><div class="service-icon">🛡️</div><h3>Ламинация</h3><p>Матовая и глянцевая защита ваших документов.</p></div>
+            <div class="service-card"><div class="service-icon">🎁</div><h3>Сувенирная продукция</h3><p>Брендирование футболок, кружек, ручек и пакетов.</p></div>
+            <div class="service-card"><div class="service-icon">🎨</div><h3>Картины на холсте</h3><p>Печать на натуральном холсте с натяжкой на подрамник.</p></div>
+            <div class="service-card"><div class="service-icon">➕</div><h3>И многое другое</h3><p>Брошюры, наклейки, листовки, меню, разработка дизайна.</p></div>
+        </div>
+    </section>
+
+    <!-- Как заказать -->
+    <section id="how-it-works" class="how-it-works">
+        <h2 class="section-title">Как сделать заказ</h2>
+        <div class="steps">
+            <div class="step"><div class="step-number">1</div><h4>Заявка</h4><p>Напишите нам в WhatsApp для расчета стоимости.</p></div>
+            <div class="step"><div class="step-number">2</div><h4>Макет</h4><p>Отправьте файл или закажите дизайн у нас.</p></div>
+            <div class="step"><div class="step-number">3</div><h4>Печать</h4><p>Мы запускаем макет в работу на нашем оборудовании.</p></div>
+            <div class="step"><div class="step-number">4</div><h4>Готово!</h4><p>Вы забираете тираж в нашем офисе.</p></div>
+        </div>
+    </section>
+
+    <!-- Подвал -->
+    <footer id="contacts">
+        <div class="footer-content">
+            <div class="footer-col">
+                <h4>OST PRINT</h4>
+                <p>Оперативная полиграфия и</p>
+                <p>широкоформатная печать.</p>
+            </div>
+            <div class="footer-col">
+                <h4>Контакты</h4>
+                <p><strong>Телефон:</strong> <a href="tel:+77717694050">+7 771 769 40 50</a></p>
+                <p><strong>Адрес:</strong> ул. Жиембет Жырау, 1</p>
+            </div>
+            <div class="footer-col">
+                <h4>График работы</h4>
+                <p><strong>Пн-Пт:</strong> 09:00 - 18:00</p>
+                <p><strong>Сб-Вс:</strong> Выходной</p>
+            </div>
+        </div>
+        <div class="copyright">&copy; 2023 OST Print. Все права защищены.</div>
+    </footer>
+
+    <!-- ЧАТ БОТ -->
+    <div class="chat-widget">
+        <!-- Кнопка открытия -->
+        <div class="chat-btn" onclick="toggleChat()">💬</div>
+        
+        <!-- Окно чата -->
+        <div class="chat-window" id="chatWindow">
+            <div class="chat-header">
+                Помощник OST Print
+                <div class="close-chat" onclick="toggleChat()">✖</div>
+            </div>
+            <div class="chat-messages" id="chatMessages">
+                <div class="msg-bot">Здравствуйте! 👋 Я виртуальный помощник типографии OST Print. Чем могу помочь?</div>
+            </div>
+            <div class="chat-options" id="chatOptions">
+                <!-- Кнопки с вариантами -->
+                <button class="chat-option-btn" onclick="sendMsg('Узнать цены', 'price')">Узнать цены</button>
+                <button class="chat-option-btn" onclick="sendMsg('Где вы находитесь?', 'address')">Где вы находитесь?</button>
+                <button class="chat-option-btn" onclick="sendMsg('Связаться с менеджером', 'manager')">Связаться с менеджером</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Логика чат-бота -->
+    <script>
+        function toggleChat() {
+            const chat = document.getElementById('chatWindow');
+            chat.style.display = chat.style.display === 'flex' ? 'none' : 'flex';
+        }
+
+        function sendMsg(text, action) {
+            const msgs = document.getElementById('chatMessages');
+            const opts = document.getElementById('chatOptions');
+            
+            // 1. Показываем сообщение пользователя
+            msgs.innerHTML += `<div class="msg-user">${text}</div>`;
+            opts.style.display = 'none'; // временно прячем кнопки
+            msgs.scrollTop = msgs.scrollHeight; // прокрутка вниз
+
+            // 2. Имитируем "печатает..." и выдаем ответ через полсекунды
+            setTimeout(() => {
+                let botReply = '';
+                
+                if(action === 'address') {
+                    botReply = `Мы находимся в г. Тараз, по адресу: <b>ул. Жиембет Жырау, 1</b>. <br><br>Работаем по будням (Пн-Пт) с 09:00 до 18:00. Сб и Вс — выходные.`;
+                } else if(action === 'price') {
+                    botReply = `Стоимость печати зависит от тиража, формата и выбранной бумаги. <br><br>Чтобы получить точный расчет, напишите нам в WhatsApp, мы быстро все посчитаем! 👇`;
+                } else if(action === 'manager') {
+                    botReply = `Наш менеджер готов проконсультировать вас и принять заказ. Нажмите на кнопку ниже, чтобы перейти в WhatsApp 👇`;
+                }
+
+                // Добавляем ответ бота
+                msgs.innerHTML += `<div class="msg-bot">${botReply}</div>`;
+                
+                // Если спрашивали про цену или менеджера, даем зеленую кнопку WhatsApp
+                if(action === 'price' || action === 'manager') {
+                    msgs.innerHTML += `<a href="https://wa.me/77717694050" class="chat-wa-link" target="_blank">Перейти в WhatsApp</a>`;
+                }
+
+                // Возвращаем кнопки обратно
+                setTimeout(() => {
+                    opts.style.display = 'flex';
+                    msgs.scrollTop = msgs.scrollHeight;
+                }, 300);
+
+                msgs.scrollTop = msgs.scrollHeight;
+            }, 600);
+        }
+    </script>
+
+</body>
+</html>
