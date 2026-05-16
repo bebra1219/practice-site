@@ -67,35 +67,17 @@
         .footer-col a { color: var(--white); text-decoration: underline; }
         .copyright { text-align: center; border-top: 1px solid var(--dark-grey); padding-top: 20px; font-size: 13px; color: #888; }
 
-        /* ЧАТ-БОТ СТИЛИ */
-        .chat-widget { position: fixed; bottom: 30px; right: 30px; z-index: 999; font-family: Arial, sans-serif; }
-        .chat-btn { width: 60px; height: 60px; background: var(--black); color: var(--white); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 30px; cursor: pointer; box-shadow: 0 5px 15px rgba(0,0,0,0.3); transition: transform 0.3s; }
-        .chat-btn:hover { transform: scale(1.1); }
-        .chat-window { width: 320px; background: var(--white); border: 2px solid var(--black); box-shadow: 8px 8px 0px var(--black); display: none; flex-direction: column; position: absolute; bottom: 80px; right: 0; border-radius: 5px; overflow: hidden; }
-        .chat-header { background: var(--black); color: var(--white); padding: 15px; font-weight: bold; display: flex; justify-content: space-between; align-items: center; text-transform: uppercase; letter-spacing: 1px; font-size: 14px; }
-        .close-chat { cursor: pointer; font-size: 20px; line-height: 1; }
-        .chat-messages { padding: 15px; height: 300px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; font-size: 14px; background: #fdfdfd; scroll-behavior: smooth; }
-        .msg-bot { background: var(--light-grey); padding: 10px 15px; border-radius: 10px 10px 10px 0; align-self: flex-start; max-width: 85%; color: var(--black); }
-        .msg-user { background: var(--black); color: var(--white); padding: 10px 15px; border-radius: 10px 10px 0 10px; align-self: flex-end; max-width: 85%; }
-        .chat-options { padding: 15px; border-top: 1px solid var(--light-grey); display: flex; flex-direction: column; gap: 8px; background: var(--white); }
-        .chat-option-btn { background: none; border: 1px solid var(--black); padding: 10px; font-size: 13px; cursor: pointer; transition: all 0.2s; text-transform: uppercase; font-weight: bold; }
-        .chat-option-btn:hover { background: var(--black); color: var(--white); }
-        .chat-wa-link { display: block; text-align: center; background: #25D366; color: white; padding: 10px; text-decoration: none; font-weight: bold; border-radius: 5px; margin-top: 5px; text-transform: uppercase; font-size: 13px; }
-
         @media (max-width: 768px) {
             header { flex-direction: column; gap: 20px; }
             nav ul { flex-direction: column; text-align: center; gap: 15px; }
             .hero h1 { font-size: 36px; }
             .features { flex-direction: column; align-items: center; gap: 30px; }
             .footer-content { flex-direction: column; }
-            .chat-widget { bottom: 15px; right: 15px; }
-            .chat-window { width: calc(100vw - 30px); position: fixed; bottom: 85px; right: 15px; }
         }
     </style>
 </head>
 <body>
 
-    <!-- Шапка -->
     <header>
         <div class="logo">OST<span>PRINT</span></div>
         <nav>
@@ -108,14 +90,12 @@
         <a href="https://wa.me/77717694050" class="btn" target="_blank">Написать в WhatsApp</a>
     </header>
 
-    <!-- Главный экран -->
     <section class="hero">
         <h1>Срочная печать полиграфии</h1>
         <p>Выполнение заказов любого объема. Оперативно, качественно и со строгим вниманием к деталям.</p>
         <a href="#services" class="btn">Смотреть услуги</a>
     </section>
 
-    <!-- Преимущества -->
     <section class="features">
         <div class="feature-item">
             <h4>Печать в срок</h4>
@@ -131,7 +111,6 @@
         </div>
     </section>
 
-    <!-- Продукция -->
     <section id="services" class="services">
         <h2 class="section-title">Наша продукция</h2>
         <div class="services-grid">
@@ -146,7 +125,6 @@
         </div>
     </section>
 
-    <!-- Как заказать -->
     <section id="how-it-works" class="how-it-works">
         <h2 class="section-title">Как сделать заказ</h2>
         <div class="steps">
@@ -157,7 +135,6 @@
         </div>
     </section>
 
-    <!-- Подвал -->
     <footer id="contacts">
         <div class="footer-content">
             <div class="footer-col">
@@ -179,31 +156,7 @@
         <div class="copyright">&copy; 2023 OST Print. Все права защищены.</div>
     </footer>
 
-    <!-- ЧАТ БОТ -->
-    <div class="chat-widget">
-        <!-- Кнопка открытия -->
-        <div class="chat-btn" onclick="toggleChat()">💬</div>
-        
-        <!-- Окно чата -->
-        <div class="chat-window" id="chatWindow">
-            <div class="chat-header">
-                Помощник OST Print
-                <div class="close-chat" onclick="toggleChat()">✖</div>
-            </div>
-            <div class="chat-messages" id="chatMessages">
-                <div class="msg-bot">Здравствуйте! 👋 Я виртуальный помощник типографии OST Print. Чем могу помочь?</div>
-            </div>
-            <div class="chat-options" id="chatOptions">
-                <!-- Кнопки с вариантами -->
-                <button class="chat-option-btn" onclick="sendMsg('Узнать цены', 'price')">Узнать цены</button>
-                <button class="chat-option-btn" onclick="sendMsg('Где вы находитесь?', 'address')">Где вы находитесь?</button>
-                <button class="chat-option-btn" onclick="sendMsg('Связаться с менеджером', 'manager')">Связаться с менеджером</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Логика чат-бота -->
-    <script src="//code.tidio.co/uwveclomfq3anwsi4fyaiwj4uymyvvep.js" async></script>    
+    <script src="//code.tidio.co/uwveclomfq3anwsi4fyaiwj4uymyvvep.js" async></script>
 
 </body>
 </html>
