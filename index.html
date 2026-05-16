@@ -203,51 +203,7 @@
     </div>
 
     <!-- Логика чат-бота -->
-    <script>
-        function toggleChat() {
-            const chat = document.getElementById('chatWindow');
-            chat.style.display = chat.style.display === 'flex' ? 'none' : 'flex';
-        }
-
-        function sendMsg(text, action) {
-            const msgs = document.getElementById('chatMessages');
-            const opts = document.getElementById('chatOptions');
-            
-            // 1. Показываем сообщение пользователя
-            msgs.innerHTML += `<div class="msg-user">${text}</div>`;
-            opts.style.display = 'none'; // временно прячем кнопки
-            msgs.scrollTop = msgs.scrollHeight; // прокрутка вниз
-
-            // 2. Имитируем "печатает..." и выдаем ответ через полсекунды
-            setTimeout(() => {
-                let botReply = '';
-                
-                if(action === 'address') {
-                    botReply = `Мы находимся в г. Тараз, по адресу: <b>ул. Жиембет Жырау, 1</b>. <br><br>Работаем по будням (Пн-Пт) с 09:00 до 18:00. Сб и Вс — выходные.`;
-                } else if(action === 'price') {
-                    botReply = `Стоимость печати зависит от тиража, формата и выбранной бумаги. <br><br>Чтобы получить точный расчет, напишите нам в WhatsApp, мы быстро все посчитаем! 👇`;
-                } else if(action === 'manager') {
-                    botReply = `Наш менеджер готов проконсультировать вас и принять заказ. Нажмите на кнопку ниже, чтобы перейти в WhatsApp 👇`;
-                }
-
-                // Добавляем ответ бота
-                msgs.innerHTML += `<div class="msg-bot">${botReply}</div>`;
-                
-                // Если спрашивали про цену или менеджера, даем зеленую кнопку WhatsApp
-                if(action === 'price' || action === 'manager') {
-                    msgs.innerHTML += `<a href="https://wa.me/77717694050" class="chat-wa-link" target="_blank">Перейти в WhatsApp</a>`;
-                }
-
-                // Возвращаем кнопки обратно
-                setTimeout(() => {
-                    opts.style.display = 'flex';
-                    msgs.scrollTop = msgs.scrollHeight;
-                }, 300);
-
-                msgs.scrollTop = msgs.scrollHeight;
-            }, 600);
-        }
-    </script>
+    <script src="//code.tidio.co/uwveclomfq3anwsi4fyaiwj4uymyvvep.js" async></script>    
 
 </body>
 </html>
