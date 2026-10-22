@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ForteBank</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        /* Базовые настройки */
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        body { background-color: #F4F5F7; color: #1A1A1A; line-height: 1.5; -webkit-font-smoothing: antialiased; }
+        a { text-decoration: none; color: inherit; transition: color 0.2s; cursor: pointer; }
+        ul { list-style: none; }
+
+        /* Оригинальные цвета Forte */
+        :root {
+            --brand-magenta: #AB0053; 
+            --brand-magenta-hover: #8A0043;
+            --white: #FFFFFF;
+            --bg-gray: #F4F5F7;
+            --text-main: #1A1A1A;
+            --text-muted: #757575;
+            --radius-lg: 32px;
+            --radius-md: 24px;
+            --shadow-sm: 0 4px 12px rgba(0,0,0,0.04);
+            --shadow-md: 0 12px 32px rgba(0,0,0,0.06);
+        }
+
+        /* Верхняя мини-панель */
+        .top-bar { background-color: var(--white); border-bottom: 1px solid #EAEAEA; font-size: 14px; font-weight: 500; }
+        .top-bar-container { max-width: 1280px; margin: 0 auto; padding: 0 24px; display: flex; justify-content: space-between; height: 48px; align-items: center; }
+        .top-nav { display: flex; gap: 32px; height: 100%; }
+        .top-nav a { display: flex; align-items: center; border-bottom: 2px solid transparent; }
+        .top-nav a.active { color: var(--brand-magenta); border-bottom: 2px solid var(--brand-magenta); }
+        .top-nav a:hover { color: var(--brand-magenta); }
+        .lang-switch { display: flex; gap: 16px; color: var(--text-muted); }
+        .lang-switch a { cursor: pointer; }
+        .lang-switch a.active { color: var(--text-main); font-weight: 600; }
+        .lang-switch a:hover { color: var(--brand-magenta); }
+
+        /* Главная шапка */
+        .main-header { background-color: var(--white); position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 8px rgba(0,0,0,0.02); }
+        .header-container { max-width: 1280px; margin: 0 auto; padding: 0 24px; display: flex; justify-content: space-between; align-items: center; height: 80px; }
+        .logo { font-size: 32px; font-weight: 800; letter-spacing: -1px; color: var(--brand-magenta); display: flex; align-items: center; transition: opacity 0.2s; }
+        .logo:hover { opacity: 0.8; }
+        .main-menu { display: flex; gap: 28px; font-weight: 500; font-size: 16px; }
+        .main-menu a:hover { color: var(--brand-magenta); }
+        .header-actions { display: flex; align-items: center; gap: 24px; }
+        
+        .btn { background-color: var(--brand-magenta); color: var(--white); padding: 12px 24px; border-radius: 12px; font-weight: 600; font-size: 15px; border: none; cursor: pointer; transition: 0.2s; display: inline-block; text-align: center; }
+        .btn:hover { background-color: var(--brand-magenta-hover); transform: translateY(-2px); }
+
+        main { max-width: 1280px; margin: 0 auto; padding: 32px 24px; display: flex; flex-direction: column; gap: 40px; }
+
+        /* Главный баннер */
+        .hero-banner { background: linear-gradient(135deg, #F9DDE8 0%, #EFEAF4 100%); border-radius: var(--radius-lg); padding: 80px 60px; display: flex; flex-direction: column; justify-content: center; min-height: 480px; position: relative; overflow: hidden; }
+        .hero-banner h1 { font-size: 48px; font-weight: 800; line-height: 1.1; margin-bottom: 16px; letter-spacing: -1px; max-width: 500px; }
+        .hero-banner p { font-size: 20px; color: #4A4A4A; margin-bottom: 40px; max-width: 400px; }
+        .hero-banner .btn { width: max-content; padding: 16px 32px; border-radius: 16px; font-size: 16px; }
+
+        /* Наши продукты */
+        .section-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 24px; }
+        .section-header h2 { font-size: 32px; font-weight: 800; letter-spacing: -0.5px; }
+        .tabs { display: flex; gap: 12px; background: #E5E7EB; padding: 4px; border-radius: 12px; }
+        .tabs button { background: none; border: none; padding: 8px 24px; border-radius: 8px; font-weight: 600; cursor: pointer; font-size: 15px; color: var(--text-muted); transition: all 0.3s ease; }
+        .tabs button.active { background: var(--white); color: var(--text-main); box-shadow: var(--shadow-sm); }
+        .tabs button:hover:not(.active) { color: var(--text-main); }
+
+        .products-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+        
+        .card { background: var(--white); border-radius: var(--radius-md); padding: 32px; box-shadow: var(--shadow-sm); transition: transform 0.3s, box-shadow 0.3s; display: flex; flex-direction: column; cursor: pointer; text-decoration: none; color: inherit; }
+        .card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
+        .card:hover .card-link { color: var(--brand-magenta-hover); }
+        
+        .card-icon { font-size: 40px; margin-bottom: 20px; }
+        .card h3 { font-size: 22px; font-weight: 700; margin-bottom: 8px; }
+        .card p { font-size: 15px; color: var(--text-muted); flex-grow: 1; margin-bottom: 24px; }
+        .card-link { color: var(--brand-magenta); font-weight: 600; font-size: 15px; transition: color 0.2s; }
+
+        /* Безопасность и доверие */
+        .security-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+
+        /* Приложение (Без QR) */
+        .app-promo { background-color: var(--white); border-radius: var(--radius-lg); padding: 60px; text-align: center; box-shadow: var(--shadow-sm); margin-bottom: 40px; }
+        .app-promo h2 { font-size: 32px; font-weight: 800; margin-bottom: 16px; }
+        .app-promo p { font-size: 16px; color: var(--text-muted); margin-bottom: 32px; max-width: 500px; margin-left: auto; margin-right: auto; }
+
+        /* Блок контактов */
+        .contacts-line { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 40px; }
+        .contact-box { background: var(--white); padding: 24px; border-radius: var(--radius-md); box-shadow: var(--shadow-sm); transition: 0.2s; display: block; }
+        .contact-box:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
+        .contact-box span { font-size: 13px; color: var(--text-muted); display: block; margin-bottom: 8px; }
+        .contact-box strong { font-size: 24px; font-weight: 800; color: var(--brand-magenta); display: block; }
+        .contact-box p { font-size: 15px; font-weight: 600; margin-top: 4px; color: var(--text-main); }
+
+        /* Подвал */
+        footer { background-color: var(--white); padding: 64px 24px 32px; border-top: 1px solid #EAEAEA; }
+        .footer-container { max-width: 1280px; margin: 0 auto; }
+        
+        .footer-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 40px; margin-bottom: 48px; }
+        .footer-col h4 { font-size: 16px; font-weight: 700; margin-bottom: 24px; color: var(--text-main); }
+        .footer-col ul { display: flex; flex-direction: column; gap: 12px; }
+        .footer-col ul li a, .footer-col ul li { font-size: 14px; color: var(--text-muted); line-height: 1.6; }
+        .footer-col ul li a:hover { color: var(--brand-magenta); text-decoration: underline; }
+        
+        /* Лицензия и копирайт */
+        .footer-bottom { border-top: 1px solid #EAEAEA; padding-top: 32px; display: flex; flex-direction: column; gap: 16px; }
+        .license-text { font-size: 12px; color: #999; line-height: 1.5; }
+        .copyright { font-size: 13px; color: var(--text-main); font-weight: 500; }
+
+        @media (max-width: 992px) {
+            .security-grid, .contacts-line { grid-template-columns: 1fr 1fr; }
+            .footer-grid { grid-template-columns: 1fr 1fr; }
+            .app-promo { padding: 40px 24px; }
+            .main-menu { display: none; }
+        }
+        @media (max-width: 576px) {
+            .top-bar, .header-actions { display: none; }
+            .security-grid, .contacts-line { grid-template-columns: 1fr; }
+            .footer-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Верхняя навигация -->
+    <div class="top-bar">
+        <div class="top-bar-container">
+            <div class="top-nav">
+                <a href="https://forte.kz/ru" target="_blank" class="active" data-i18n="nav_foryou">Для вас</a>
+                <a href="https://business.forte.kz/" target="_blank" data-i18n="nav_business">Для бизнеса</a>
+                <a href="https://premier.forte.kz/ru" target="_blank">Premier</a>
+            </div>
+            <!-- СМЕНА ЯЗЫКА -->
+            <div class="lang-switch">
+                <a onclick="changeLang('ru')" class="active" data-lang="ru">Рус</a>
+                <a onclick="changeLang('kk')" data-lang="kk">Қаз</a>
+                <a onclick="changeLang('en')" data-lang="en">Eng</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Основная шапка -->
+    <header class="main-header">
+        <div class="header-container">
+            <a href="https://forte.kz/ru" target="_blank" class="logo">Forte</a>
+            <nav class="main-menu">
+                <a href="https://bank.forte.kz/ru/cards" target="_blank" data-i18n="menu_cards">Карты</a>
+                <a href="https://bank.forte.kz/ru/credits" target="_blank" data-i18n="menu_credits">Кредиты</a>
+                <a href="https://bank.forte.kz/ru/deposits" target="_blank" data-i18n="menu_deposits">Депозиты</a>
+                <a href="https://bank.forte.kz/ru/transfers" target="_blank" data-i18n="menu_transfers">Переводы</a>
+                <a href="https://bank.forte.kz/ru/solosegment" target="_blank">Solo</a>
+                <a href="https://market.forte.kz/" target="_blank">Market</a>
+            </nav>
+            <div class="header-actions">
+                <a href="https://my.forte.kz/" target="_blank" class="btn" data-i18n="btn_banking">Интернет-банкинг</a>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <!-- Главный баннер -->
+        <section class="hero-banner">
+            <h1 data-i18n="hero_title">Премиальные карты Solo</h1>
+            <p data-i18n="hero_desc">для тех, кто ценит время и комфорт</p>
+            <a href="https://bank.forte.kz/ru/solosegment" target="_blank" class="btn" data-i18n="btn_more">Подробнее</a>
+        </section>
+
+        <!-- Блок Наши продукты -->
+        <section>
+            <div class="section-header">
+                <h2 data-i18n="prod_title">Наши продукты</h2>
+                <div class="tabs" id="productTabs">
+                    <button class="active" data-i18n="tab_bank">Банк</button>
+                    <button data-i18n="tab_bus">Бизнес</button>
+                </div>
+            </div>
+            
+            <div class="products-grid">
+                <a href="https://bank.forte.kz/ru/cards" target="_blank" class="card">
+                    <div class="card-icon">💳</div>
+                    <h3 data-i18n="card_title">Карты</h3>
+                    <p data-i18n="card_desc">Карты с кешбэком и привилегиями.</p>
+                    <span class="card-link" data-i18n="btn_more">Подробнее →</span>
+                </a>
+                <a href="https://bank.forte.kz/ru/credits" target="_blank" class="card">
+                    <div class="card-icon">💸</div>
+                    <h3 data-i18n="cred_title">Кредиты</h3>
+                    <p data-i18n="cred_desc">Быстрые кредиты на любые цели.</p>
+                    <span class="card-link" data-i18n="btn_more">Подробнее →</span>
+                </a>
+                <a href="https://bank.forte.kz/ru/deposits" target="_blank" class="card">
+                    <div class="card-icon">📈</div>
+                    <h3 data-i18n="dep_title">Депозиты</h3>
+                    <p data-i18n="dep_desc">Надёжные депозиты с выгодной ставкой.</p>
+                    <span class="card-link" data-i18n="btn_more">Подробнее →</span>
+                </a>
+                <a href="https://market.forte.kz/" target="_blank" class="card">
+                    <div class="card-icon">🛍️</div>
+                    <h3 data-i18n="mark_title">Маркет</h3>
+                    <p data-i18n="mark_desc">Более 200 000 товаров в рассрочку и кредит.</p>
+                    <span class="card-link" data-i18n="btn_more">Подробнее →</span>
+                </a>
+                <a href="https://mobile.forte.kz/ru" target="_blank" class="card">
+                    <div class="card-icon">📱</div>
+                    <h3 data-i18n="mob_title">Мобайл</h3>
+                    <p data-i18n="mob_desc">Мобильная связь с привилегиями.</p>
+                    <span class="card-link" data-i18n="btn_more">Подробнее →</span>
+                </a>
+            </div>
+        </section>
+
+        <!-- Блок Безопасность и доверие -->
+        <section>
+            <div class="section-header">
+                <h2 data-i18n="sec_title">Безопасность и доверие</h2>
+            </div>
+            <div class="security-grid">
+                <a href="https://forte.kz/ru/cybersecurity" target="_blank" class="card security-card">
+                    <h3 data-i18n="sec1_title">Кибербезопасность</h3>
+                    <p data-i18n="sec1_desc">Как защититься от мошенников и безопасно пользоваться сервисами.</p>
+                    <span class="card-link" data-i18n="btn_more">Подробнее</span>
+                </a>
+                <a href="https://forte.kz/ru/certification-center" target="_blank" class="card security-card">
+                    <h3 data-i18n="sec2_title">Центр сертификации</h3>
+                    <p data-i18n="sec2_desc">Удостоверяющий центр и электронные сертификаты Forte.</p>
+                    <span class="card-link" data-i18n="btn_more">Подробнее</span>
+                </a>
+                <a href="https://forte.kz/ru/check_document" target="_blank" class="card security-card">
+                    <h3 data-i18n="sec3_title">Проверка документов</h3>
+                    <p data-i18n="sec3_desc">Подтвердите подлинность справок и документов банка.</p>
+                    <span class="card-link" data-i18n="btn_more">Подробнее</span>
+                </a>
+            </div>
+        </section>
+
+        <!-- Приложение Forte -->
+        <section class="app-promo">
+            <h2 data-i18n="app_title">Мобильное приложение Forte</h2>
+            <p data-i18n="app_desc">Нажмите на кнопку ниже, чтобы безопасно скачать наше приложение</p>
+            <a href="https://app.forte.kz/" target="_blank" class="btn" data-i18n="btn_app">Скачать наше приложение</a>
+        </section>
+
+        <!-- Контакты и адреса -->
+        <div class="contacts-line">
+            <a href="tel:7575" class="contact-box">
+                <span data-i18n="cont_ind">Частным лицам</span>
+                <strong>7575</strong>
+                <p data-i18n="cont_free">Бесплатно с мобильного</p>
+            </a>
+            <a href="tel:55575" class="contact-box">
+                <span data-i18n="cont_bus">Бизнес клиентам</span>
+                <strong>55575</strong>
+                <p data-i18n="cont_free">Бесплатно с мобильного</p>
+            </a>
+            <a href="https://2gis.kz/taraz/firm/70000001051992241/tab/info" target="_blank" class="contact-box">
+                <span data-i18n="cont_branch">Наши отделения</span>
+                <strong>Тараз</strong>
+                <p data-i18n="cont_hq">Офис: ул. Казыбек би, 16</p>
+            </a>
+            <div class="contact-box">
+                <span data-i18n="cont_time">Режим работы</span>
+                <strong>09:00 - 18:00</strong>
+                <p data-i18n="cont_sched">Пн-Пт. Сб-Вс: Выходной</p>
+            </div>
+        </div>
+    </main>
+
+    <!-- Подвал (Footer) -->
+    <footer>
+        <div class="footer-container">
+            <div class="footer-grid">
+                
+                <div class="footer-col">
+                    <h4>Forte</h4>
+                    <ul>
+                        <li><a href="https://forte.kz/ru/news" target="_blank">Новости</a></li>
+                        <li><a href="https://forte.kz/ru/inform" target="_blank">Объявления</a></li>
+                        <li><a href="https://forte.kz/ru/information" target="_blank" data-i18n="foot_about">О банке</a></li>
+                        <li><a href="https://forte.kz/ru/leadership" target="_blank" data-i18n="foot_lead">Руководство</a></li>
+                        <li><a href="https://forte.kz/ru/reporting" target="_blank" data-i18n="foot_rep">Отчетность</a></li>
+                        <li><a href="https://forte.kz/ru/documents" target="_blank" data-i18n="foot_doc">Документы</a></li>
+                        <li><a href="https://bank.forte.kz/ru/Compliance" target="_blank">Compliance</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-col">
+                    <h4 data-i18n="nav_foryou">Для вас</h4>
+                    <ul>
+                        <li><a href="https://bank.forte.kz/ru/cards" target="_blank" data-i18n="menu_cards">Карты</a></li>
+                        <li><a href="https://bank.forte.kz/ru/credits" target="_blank" data-i18n="menu_credits">Кредиты</a></li>
+                        <li><a href="https://bank.forte.kz/ru/deposits" target="_blank" data-i18n="menu_deposits">Депозиты</a></li>
+                        <li><a href="https://bank.forte.kz/ru/transfers" target="_blank" data-i18n="menu_transfers">Переводы</a></li>
+                        <li><a href="https://bank.forte.kz/ru/salary-project" target="_blank" data-i18n="foot_sal">Зарплатный проект</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-col">
+                    <h4 data-i18n="nav_business">Для бизнеса</h4>
+                    <ul>
+                        <li><a href="https://business.forte.kz/ru/service" target="_blank" data-i18n="foot_serv">Обслуживание</a></li>
+                        <li><a href="https://business.forte.kz/ru/corporate-cards" target="_blank" data-i18n="foot_bcard">Бизнес карты</a></li>
+                        <li><a href="https://business.forte.kz/ru/credits" target="_blank" data-i18n="cred_title">Кредиты</a></li>
+                        <li><a href="https://business.forte.kz/ru/deposits" target="_blank" data-i18n="dep_title">Депозиты</a></li>
+                        <li><a href="https://business.forte.kz/ru/guarantees" target="_blank" data-i18n="foot_guar">Гарантии</a></li>
+                        <li><a href="https://business.forte.kz/ru/banking" target="_blank">Банкинг</a></li>
+                        <li><a href="https://business.forte.kz/ru/acquiring" target="_blank" data-i18n="foot_acq">Эквайринг</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-col">
+                    <h4>Premier</h4>
+                    <ul>
+                        <li><a href="https://premier.forte.kz/ru/premium_service" target="_blank" data-i18n="foot_prem1">Банковское обслуживание</a></li>
+                        <li><a href="https://premier.forte.kz/ru/capital_management" target="_blank" data-i18n="foot_prem2">Управление капиталом</a></li>
+                        <li><a href="https://premier.forte.kz/ru/loyalty-program" target="_blank" data-i18n="foot_prem3">Программа лояльности</a></li>
+                        <li><a href="https://premier.forte.kz/ru/vacation-and-travel" target="_blank" data-i18n="foot_prem4">Отдых и путешествие</a></li>
+                        <li><a href="https://premier.forte.kz/ru/our_team" target="_blank" data-i18n="foot_prem5">Наша команда</a></li>
+                        <li><a href="https://premier.forte.kz/ru/additional_service" target="_blank" data-i18n="foot_prem6">Дополнительный сервис</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p class="license-text">
+                    Лицензия Агентства Республики Казахстан по регулированию и развитию финансового рынка №1.1.965.133 от 14.07.2026 выдана АО «ForteBank».<br>
+                    Демонстрируемые дизайны платежных карточек носят ознакомительный характер, фактический дизайн выпускаемых платежных карточек может отличаться от демонстрируемых. Более точную информацию вы можете получить у менеджера Банка.
+                </p>
+                <p class="copyright">© 2023 АО «ForteBank»</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Скрипт для работы вкладок Банк/Бизнес -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const tabs = document.querySelectorAll('#productTabs button');
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    tabs.forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+                });
+            });
+        });
+    </script>
+
+    <!-- СКРИПТ ПЕРЕВОДА ЯЗЫКОВ -->
+    <script>
+        // Словарь переводов
+        const translations = {
+            ru: {
+                nav_foryou: "Для вас", nav_business: "Для бизнеса", 
+                menu_cards: "Карты", menu_credits: "Кредиты", menu_deposits: "Депозиты", menu_transfers: "Переводы",
+                btn_banking: "Интернет-банкинг",
+                hero_title: "Премиальные карты Solo", hero_desc: "для тех, кто ценит время и комфорт", btn_more: "Подробнее →",
+                prod_title: "Наши продукты", tab_bank: "Банк", tab_bus: "Бизнес",
+                card_title: "Карты", card_desc: "Карты с кешбэком и привилегиями.",
+                cred_title: "Кредиты", cred_desc: "Быстрые кредиты на любые цели.",
+                dep_title: "Депозиты", dep_desc: "Надёжные депозиты с выгодной ставкой.",
+                mark_title: "Маркет", mark_desc: "Более 200 000 товаров в рассрочку и кредит.",
+                mob_title: "Мобильная связь", mob_desc: "Мобильная связь с привилегиями.",
+                sec_title: "Безопасность и доверие",
+                sec1_title: "Кибербезопасность", sec1_desc: "Как защититься от мошенников и безопасно пользоваться сервисами.",
+                sec2_title: "Центр сертификации", sec2_desc: "Удостоверяющий центр и электронные сертификаты Forte.",
+                sec3_title: "Проверка документов", sec3_desc: "Подтвердите подлинность справок и документов банка.",
+                app_title: "Мобильное приложение Forte", app_desc: "Нажмите на кнопку ниже, чтобы безопасно скачать наше приложение", btn_app: "Скачать наше приложение",
+                cont_ind: "Частным лицам", cont_bus: "Бизнес клиентам", cont_free: "Бесплатно с мобильного",
+                cont_branch: "Наши отделения", cont_hq: "Офис: ул. Казыбек би, 16",
+                cont_time: "Режим работы", cont_sched: "Пн-Пт. Сб-Вс: Выходной",
+                foot_about: "О банке", foot_lead: "Руководство", foot_rep: "Отчетность", foot_doc: "Документы", foot_sal: "Зарплатный проект",
+                foot_serv: "Обслуживание", foot_bcard: "Бизнес карты", foot_guar: "Гарантии", foot_acq: "Эквайринг",
+                foot_prem1: "Банковское обслуживание", foot_prem2: "Управление капиталом", foot_prem3: "Программа лояльности", foot_prem4: "Отдых и путешествие", foot_prem5: "Наша команда", foot_prem6: "Дополнительный сервис"
+            },
+            kk: {
+                nav_foryou: "Сіз үшін", nav_business: "Бизнес үшін", 
+                menu_cards: "Карталар", menu_credits: "Несиелер", menu_deposits: "Депозиттер", menu_transfers: "Аударымдар",
+                btn_banking: "Интернет-банкинг",
+                hero_title: "Solo премиум карталары", hero_desc: "уақыт пен жайлылықты бағалайтындар үшін", btn_more: "Толығырақ →",
+                prod_title: "Біздің өнімдер", tab_bank: "Банк", tab_bus: "Бизнес",
+                card_title: "Карталар", card_desc: "Кэшбэк және артықшылықтары бар карталар.",
+                cred_title: "Несиелер", cred_desc: "Кез келген мақсатқа жылдам несиелер.",
+                dep_title: "Депозиттер", dep_desc: "Тиімді мөлшерлемесі бар сенімді депозиттер.",
+                mark_title: "Маркет", mark_desc: "Бөліп төлеуге және несиеге 200 000-нан астам тауар.",
+                mob_title: "Мобильді байланыс", mob_desc: "Артықшылықтары бар ұялы байланыс.",
+                sec_title: "Қауіпсіздік және сенім",
+                sec1_title: "Киберқауіпсіздік", sec1_desc: "Алаяқтардан қалай қорғануға және сервистерді қауіпсіз пайдалануға болады.",
+                sec2_title: "Сертификаттау орталығы", sec2_desc: "Forte куәландырушы орталығы және электрондық сертификаттары.",
+                sec3_title: "Құжаттарды тексеру", sec3_desc: "Банк анықтамалары мен құжаттарының түпнұсқалығын растаңыз.",
+                app_title: "Forte мобильді қосымшасы", app_desc: "Қосымшаны қауіпсіз жүктеп алу үшін батырманы басыңыз", btn_app: "Қосымшаны жүктеп алу",
+                cont_ind: "Жеке тұлғаларға", cont_bus: "Бизнес клиенттерге", cont_free: "Ұялы телефоннан тегін",
+                cont_branch: "Біздің бөлімшелер", cont_hq: "Кеңсе: Қазыбек би көш., 16",
+                cont_time: "Жұмыс уақыты", cont_sched: "Дс-Жм. Сб-Жс: Демалыс",
+                foot_about: "Банк туралы", foot_lead: "Басшылық", foot_rep: "Есептілік", foot_doc: "Құжаттар", foot_sal: "Жалақы жобасы",
+                foot_serv: "Қызмет көрсету", foot_bcard: "Бизнес карталар", foot_guar: "Кепілдіктер", foot_acq: "Эквайринг",
+                foot_prem1: "Банктік қызмет көрсету", foot_prem2: "Капиталды басқару", foot_prem3: "Бейілділік бағдарламасы", foot_prem4: "Демалыс және саяхат", foot_prem5: "Біздің команда", foot_prem6: "Қосымша қызмет"
+            },
+            en: {
+                nav_foryou: "For you", nav_business: "For business", 
+                menu_cards: "Cards", menu_credits: "Credits", menu_deposits: "Deposits", menu_transfers: "Transfers",
+                btn_banking: "Internet banking",
+                hero_title: "Premium Solo cards", hero_desc: "for those who value time and comfort", btn_more: "Learn more →",
+                prod_title: "Our products", tab_bank: "Bank", tab_bus: "Business",
+                card_title: "Cards", card_desc: "Cards with cashback and privileges.",
+                cred_title: "Credits", cred_desc: "Fast credits for any purpose.",
+                dep_title: "Deposits", dep_desc: "Reliable deposits with favorable rates.",
+                mark_title: "Market", mark_desc: "Over 200,000 products on installment and credit.",
+                mob_title: "Mobile", mob_desc: "Mobile connection with privileges.",
+                sec_title: "Security and trust",
+                sec1_title: "Cybersecurity", sec1_desc: "How to protect against scammers and use services safely.",
+                sec2_title: "Certification Center", sec2_desc: "Authentication center and Forte electronic certificates.",
+                sec3_title: "Document check", sec3_desc: "Confirm the authenticity of bank certificates and documents.",
+                app_title: "Forte Mobile App", app_desc: "Click the button below to securely download our app", btn_app: "Download our app",
+                cont_ind: "Individuals", cont_bus: "Business clients", cont_free: "Free from mobile",
+                cont_branch: "Our branches", cont_hq: "Office: Kazybek bi st., 16",
+                cont_time: "Working hours", cont_sched: "Mon-Fri. Sat-Sun: Closed",
+                foot_about: "About bank", foot_lead: "Management", foot_rep: "Reporting", foot_doc: "Documents", foot_sal: "Salary project",
+                foot_serv: "Service", foot_bcard: "Business cards", foot_guar: "Guarantees", foot_acq: "Acquiring",
+                foot_prem1: "Banking service", foot_prem2: "Capital management", foot_prem3: "Loyalty program", foot_prem4: "Vacation and travel", foot_prem5: "Our team", foot_prem6: "Additional service"
+            }
+        };
+
+        function changeLang(lang) {
+            // Меняем текст везде, где есть метка data-i18n
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (translations[lang] && translations[lang][key]) {
+                    el.textContent = translations[lang][key];
+                }
+            });
+
+            // Переключаем активную кнопку в меню языков
+            document.querySelectorAll('.lang-switch a').forEach(a => {
+                a.classList.remove('active');
+                if (a.getAttribute('data-lang') === lang) {
+                    a.classList.add('active');
+                }
+            });
+        }
+    </script>
+
+    <!-- ЧАТ-БОТ TIDIO -->
+    <script src="//code.tidio.co/uwveclomfq3anwsi4fyaiwj4uymyvvep.js" async></script>
+
+</body>
+</html>
